@@ -1,0 +1,36 @@
+<configuration>
+	<contextName>${project.artifactId}</contextName>
+
+	<jmxConfigurator />
+
+	<!-- Spring定时器 TaskScheduler is defined -->
+	<logger name="org.springframework.scheduling">
+		<level value="info" />
+	</logger>
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date %level %logger{55} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.url}/${project.artifactId}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.url}/history/${project.artifactId}.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<layout class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%date %level %logger{55} - %msg%n</pattern>
+			</layout>
+		</encoder>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+		<appender-ref ref="email" />
+		<appender-ref ref="db-classic-mysql" />
+	</root>
+</configuration>

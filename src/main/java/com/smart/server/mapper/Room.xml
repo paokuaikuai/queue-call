@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smart.server.dao.RoomDao">
+	<select id="get" parameterType="java.lang.Integer" resultType="Room">
+		SELECT *
+		FROM sys_Room 
+		WHERE id = #{id}
+	</select>
+
+	<insert id="insert" parameterType="Room" statementType="PREPARED"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO SYS_Room(
+		departId,
+		roomCode,
+		roomName,
+		createTime,
+		updateTime
+		)
+		VALUES (
+		#{departId},
+		#{roomCode},
+		#{roomName},
+		#{createTime},
+		#{updateTime}
+		)
+	</insert>
+
+	<update id="update" parameterType="Room" statementType="PREPARED">
+		UPDATE
+		SYS_Room a SET
+		a.`departId` = #{departId},
+		a.`roomCode` = #{roomCode},
+		a.`roomName` = #{roomName},
+		a.`updateTime` = #{updateTime}
+		WHERE a.`id` = #{id}
+	</update>
+
+
+	<select id="findPaginationByName" parameterType="map"
+		resultType="Room">
+		SELECT r.*,d.departName
+		FROM sys_Room r,sys_department d
+		WHERE r.departId =d.id
+		<if test="roomName != null and roomName != '' ">
+			AND a.roomName like CONCAT('%',#{roomName},'%')
+		</if>
+	</select>
+	
+	<select id="findRoomByDepartId" parameterType="Integer"
+		resultType="Room">
+		SELECT *
+		FROM sys_Room r
+		WHERE r.departId = #{departId}
+	</select>
+
+	<delete id="deleteById" parameterType="list" statementType="PREPARED">
+		DELETE FROM SYS_Room
+		<choose>
+			<when test="list == null or list.size() == 0">
+				WHERE 1 != 1
+			</when>
+			<when test="list.size() == 1">
+				WHERE `id` =
+				<foreach collection="list" item="id">#{id}</foreach>
+			</when>
+			<otherwise>
+				WHERE `id` in
+				<foreach collection="list" item="id" open="(" separator=","
+					close=")">#{id}</foreach>
+			</otherwise>
+		</choose>
+	</delete>
+
+</mapper>

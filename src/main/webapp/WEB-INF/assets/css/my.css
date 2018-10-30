@@ -1,0 +1,17 @@
+#gbox_screenTable .ui-jqgrid-htable thead th{text-align:center !important}
+#screenTable td{vertical-align:middle !important}
+#gbox_screenMaskTable .ui-jqgrid-htable thead th{text-align:center !important}
+#screenMaskTable td{vertical-align:middle !important}
+#screenMaskTable{font-size:24px}
+
+#first_pagerList_l .ui-icon-seek-first:before{content:"\f100";font-family: FontAwesome;}
+#prev_pagerList_l .ui-icon-seek-prev:before{content:"\f104";font-family: FontAwesome;}
+#next_pagerList_l .ui-icon-seek-next:before{content:"\f105";font-family: FontAwesome;}
+#last_pagerList_l .ui-icon-seek-end:before{content:"\f101";font-family: FontAwesome;}
+#first_pagerList_r .ui-icon-seek-first:before{content:"\f100";font-family: FontAwesome;}
+#prev_pagerList_r .ui-icon-seek-prev:before{content:"\f104";font-family: FontAwesome;}
+#next_pagerList_r .ui-icon-seek-next:before{content:"\f105";font-family: FontAwesome;}
+#last_pagerList_r .ui-icon-seek-end:before{content:"\f101";font-family: FontAwesome;}
+
+#gview_queueTable_l .ui-jqgrid-titlebar .ui-icon{display:none}
+#gview_queueTable_r .ui-jqgrid-titlebar .ui-icon{display:none}

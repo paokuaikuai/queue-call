@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smart.server.dao.QueueDataDao">
+
+    <resultMap id="queueData" type="com.smart.server.model.QueueData">
+        <result property="id" column="id"/>
+        <result property="createTime" column="createTime"/>
+        <result property="data" column="data" typeHandler="com.smart.server.typeHandler.QueueItemTypeHandler"/>
+    </resultMap>
+
+    <select id="getByDepartId" parameterType="map" resultMap="queueData">
+		SELECT * FROM sys_queuedata a where a.departId = #{departId} limit 1
+	</select>
+
+    <delete id="deleteByDepartId" parameterType="map">
+		delete from sys_queuedata where departId = #{departId}
+	</delete>
+
+    <select id="findAll" resultMap="queueData">
+		SELECT * FROM sys_queuedata a
+	</select>
+
+	<select id="deleteAll">
+		DELETE FROM sys_queuedata where 1 = 1
+	</select>
+
+    <insert id="insert" parameterType="QueueData" statementType="PREPARED"
+            useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO sys_queuedata(
+		  data,
+		  departId,
+		  createTime)
+		VALUES (
+		  #{data,jdbcType=VARCHAR,typeHandler=com.smart.server.typeHandler.QueueItemTypeHandler},
+		  #{departId},
+		  #{createTime})
+	</insert>
+
+    <insert id="insertQueueLog" parameterType="QueueModel" statementType="PREPARED"
+            useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO sys_queuelog(
+		number,
+		type,
+		firstNum,
+		patientCard,
+		patientName,
+		doctorName,
+		departId,
+		roomId,
+		isVip,
+		isFirst,
+		status,
+		createTime,
+		updateTime
+		)
+		VALUES (
+		#{type},
+		#{number},
+		#{firstNum},
+		#{patientCard},
+		#{patientName},
+		#{doctorName},
+		#{departId},
+		#{roomId},
+		#{isVip},
+		#{isFirst},
+		#{status},
+		#{createTime},
+		#{updateTime}
+		)
+	</insert>
+</mapper>

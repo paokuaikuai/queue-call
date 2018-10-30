@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smart.server.dao.BusinessTypeDao">
+
+    <resultMap id="businessTypeMap" type="com.smart.server.model.BusinessType">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="departId" column="departId"/>
+        <association property="department" javaType="com.smart.server.model.Department">
+            <id property="id" column="d_id"></id>
+            <id property="departName" column="d_departName"></id>
+        </association>
+    </resultMap>
+
+    <select id="get" parameterType="java.lang.Integer" resultType="BusinessType">
+		SELECT *
+		FROM sys_business_type a
+		WHERE id = #{id}
+	</select>
+
+    <insert id="insert" parameterType="BusinessType" statementType="PREPARED"
+            useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO sys_business_type(
+            name,
+            departId
+		)
+		VALUES (
+            #{name},
+            #{departId}
+		)
+	</insert>
+
+    <update id="update" parameterType="BusinessType" statementType="PREPARED">
+		UPDATE
+		sys_business_type a SET
+		a.`name` = #{name},
+		a.`departId` = #{departId}
+		WHERE a.`id` = #{id}
+	</update>
+
+
+    <select id="findPagination" parameterType="map"
+            resultMap="businessTypeMap">
+        SELECT a.id, a.name, a.departId, d.id as d_id, d.departName as d_departName
+        FROM sys_business_type a, sys_department d
+        where 1=1 and a.departId = d.id
+        <if test="departId != null and departId != '' ">
+            AND a.departId = #{departId}
+        </if>
+    </select>
+
+    <delete id="deleteById" parameterType="list" statementType="PREPARED">
+        DELETE FROM sys_business_type
+        <choose>
+            <when test="list == null or list.size() == 0">
+                WHERE 1 != 1
+            </when>
+            <when test="list.size() == 1">
+                WHERE `id` =
+                <foreach collection="list" item="id">#{id}</foreach>
+            </when>
+            <otherwise>
+                WHERE `id` in
+                <foreach collection="list" item="id" open="(" separator=","
+                         close=")">#{id}
+                </foreach>
+            </otherwise>
+        </choose>
+    </delete>
+
+</mapper>
